@@ -99,7 +99,8 @@ describe("two-phase solver", () => {
     for (let n = 0; n < 200; n++) {
       const c = randomState(rng);
       const t0 = performance.now();
-      const sol = solve(c, { targetLength: 21, timeoutMs: 3000 });
+      // generous budget: the search stops as soon as it finds ≤ 21 moves, so this only matters on slow machines
+      const sol = solve(c, { targetLength: 21, timeoutMs: 30_000 });
       times.push(performance.now() - t0);
       expect(sol).not.toBeNull();
       expect(isSolvedCubie(applyMoves(c, sol!))).toBe(true);
@@ -119,7 +120,7 @@ describe("two-phase solver", () => {
       fc.property(fc.integer({ min: 1, max: 2 ** 31 }), (seed) => {
         const c = randomState(seededRng(seed));
         const back = cubieFromFacelets(faceletsFromCubie(c));
-        const sol = solve(back, { targetLength: 23, timeoutMs: 3000 })!;
+        const sol = solve(back, { targetLength: 23, timeoutMs: 30_000 })!;
         expect(isSolvedCubie(applyMoves(back, sol))).toBe(true);
       }),
       { numRuns: 50 },

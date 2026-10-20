@@ -1,5 +1,7 @@
 # U.CUBE
 
+**Play it: https://mohammedyousri.github.io/u-cube/**
+
 A 3D Rubik's Cube for the web where **difficulty is real distance**: every scramble is graded by the length of its shortest solution, proven exactly up to 10 moves. Designed and built by M.Yousri.
 
 - **Play**: drag a sticker and the layer under your finger turns with it. A flick carries it on to the next quarter turn. There's keyboard play with the cstimer layout, and optional on-screen arrows.
