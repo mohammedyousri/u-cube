@@ -1,0 +1,25 @@
+import { test } from "@playwright/test";
+test("white cube highlight + orange buttons", async ({ page }) => {
+  await page.setViewportSize({ width: 1100, height: 760 });
+  await page.goto("/");
+  await page.evaluate(() => localStorage.setItem("u3.settings", JSON.stringify({ body: "white", turnMs: 500 })));
+  await page.reload();
+  await page.waitForFunction(() => !!(window as any).__u3);
+  await page.click('[data-level="medium"]');
+  await page.waitForFunction(() => ["ready", "inspecting"].includes((window as any).__u3.game.status));
+  await page.waitForTimeout(500);
+  await page.keyboard.press("i");
+  await page.waitForTimeout(230);
+  await page.screenshot({ path: "test-results/shots/30-white-cube-turn.png" });
+  await page.waitForTimeout(600);
+  await page.keyboard.press("k");
+  await page.evaluate(() => localStorage.setItem("u3.settings", JSON.stringify({ body: "black", turnMs: 500 })));
+  await page.reload();
+  await page.waitForFunction(() => !!(window as any).__u3);
+  await page.click('[data-level="medium"]');
+  await page.waitForFunction(() => ["ready", "inspecting"].includes((window as any).__u3.game.status));
+  await page.waitForTimeout(500);
+  await page.keyboard.press("i");
+  await page.waitForTimeout(230);
+  await page.screenshot({ path: "test-results/shots/31-black-cube-turn.png" });
+});

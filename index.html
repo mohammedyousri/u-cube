@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#eef1f6" />
+    <meta name="description" content="U.CUBE: a 3D cube where difficulty is the true distance from solved. Scan your own cube and get guided to solved." />
+    <title>U.CUBE</title>
+    <link rel="icon" href="./icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="U.CUBE" />
+  </head>
+  <body>
+    <div id="app">
+      <div id="stage" role="img" aria-label="3D cube. Drag a sticker to turn its layer; drag outside the cube to look around."></div>
+
+      <header class="top">
+        <button class="brand" id="brand" aria-label="About U.CUBE" aria-haspopup="dialog"></button>
+        <nav class="levels" role="radiogroup" aria-label="Difficulty"></nav>
+        <div class="top-actions">
+          <button class="icon-btn" data-action="scan" aria-label="Scan a real cube"></button>
+          <button class="icon-btn" data-action="stats" aria-label="Statistics"></button>
+          <button class="icon-btn" data-action="settings" aria-label="Settings"></button>
+          <button class="icon-btn" data-action="help" aria-label="How to play"></button>
+        </div>
+      </header>
+
+      <section class="scramble" aria-live="polite" hidden>
+        <div class="scramble-head">
+          <span class="scramble-label">Scramble</span>
+          <span class="badge" id="distance-badge"></span>
+        </div>
+        <div class="scramble-alg" id="scramble-alg"></div>
+      </section>
+
+      <div class="ghost-label" id="ghost-label" hidden></div>
+
+      <section class="hud" aria-label="Timer">
+        <div class="status-line" id="status-line" role="status"></div>
+        <div class="timer" id="timer">0.00</div>
+        <div class="meta" id="meta"></div>
+        <div class="actions" id="actions">
+          <button class="btn ghost" data-action="hint">Hint</button>
+          <button class="btn ghost" data-action="undo" aria-keyshortcuts="Control+Z">Undo</button>
+          <button class="btn primary" data-action="new" aria-keyshortcuts="Space">New scramble</button>
+        </div>
+      </section>
+
+      <section class="replay-bar" id="replay-bar" hidden aria-label="Replay controls"></section>
+      <section class="result" id="result" hidden role="dialog" aria-modal="false" aria-labelledby="result-title"></section>
+      <aside class="panel" id="panel" hidden role="dialog" aria-modal="true" aria-labelledby="panel-title"></aside>
+      <section class="scan" id="scan" hidden role="dialog" aria-modal="true" aria-labelledby="scan-title"></section>
+      <div class="about" id="about" hidden role="dialog" aria-modal="true" aria-labelledby="about-title"></div>
+      <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
