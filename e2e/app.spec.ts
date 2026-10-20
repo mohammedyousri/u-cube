@@ -258,3 +258,43 @@ test("accessibility in dark mode with arrows and a preset background", async ({ 
   const r = await new AxeBuilder(page).analyze();
   expect(withoutBrandException(r.violations).map((v) => v.id)).toEqual([]);
 });
+
+test("install button: Chrome-style prompt", async ({ page }) => {
+  await boot(page);
+  await expect(page.locator("#install-btn")).toBeHidden(); // nothing offered until the browser says it can install
+  await page.evaluate(() => {
+    const e = new Event("beforeinstallprompt") as Event & { prompt: () => Promise<void>; userChoice: Promise<{ outcome: string }> };
+    (window as unknown as { __prompted: boolean }).__prompted = false;
+    e.prompt = async () => void ((window as unknown as { __prompted: boolean }).__prompted = true);
+    e.userChoice = Promise.resolve({ outcome: "accepted" });
+    window.dispatchEvent(e);
+  });
+  await expect(page.locator("#install-btn")).toBeVisible();
+  await page.click("#install-btn");
+  await page.waitForFunction(() => (window as unknown as { __prompted: boolean }).__prompted);
+  await expect(page.locator("#install-btn")).toBeHidden();
+});
+
+test("install button: iPhone Safari shows Add to Home Screen steps, header stays on one row", async ({ browser }) => {
+  const ctx = await browser.newContext({
+    viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: 3,
+    userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1",
+  });
+  const page = await ctx.newPage();
+  await boot(page);
+  const btn = page.locator("#install-btn");
+  await expect(btn).toBeVisible();
+  const brand = await page.locator("#brand").boundingBox();
+  const b = await btn.boundingBox();
+  expect(Math.abs(brand!.y + brand!.height / 2 - (b!.y + b!.height / 2))).toBeLessThan(12); // same row
+  await btn.tap();
+  await expect(page.locator("#install")).toBeVisible();
+  await expect(page.locator(".install-steps")).toContainText("Add to Home Screen");
+  await page.waitForTimeout(600); // let the dialog's entrance animation finish before measuring contrast
+  await page.screenshot({ path: "test-results/ux/install-ios.png" });
+  const r = await new AxeBuilder(page).analyze();
+  expect(withoutBrandException(r.violations).map((v) => v.id)).toEqual([]);
+  await page.locator(".install-done").tap();
+  await expect(page.locator("#install")).toBeHidden();
+  await ctx.close();
+});

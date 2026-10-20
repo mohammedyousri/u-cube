@@ -491,3 +491,29 @@ body.scanning .arrows { display: none; }
   .result-btns { grid-template-columns: repeat(3, 1fr); }
   .result-btns .primary { grid-column: 1 / -1; }
 }
+
+/* ---- install ------------------------------------------------------------------ */
+.install-btn {
+  display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 14px 0 11px; border-radius: 12px;
+  border: 0; background: var(--hl); color: var(--on-hl); font-weight: 700; font-size: 14px; white-space: nowrap;
+  box-shadow: var(--shadow); transition: transform .15s;
+}
+.install-btn:hover { transform: translateY(-1px); }
+.install-btn svg { width: 18px; height: 18px; }
+.about .install-card { text-align: left; }
+.install-card h2 { margin: 0 0 8px; font-size: 22px; }
+.install-steps { margin: 0 0 18px; padding-left: 22px; display: grid; gap: 10px; color: var(--text); }
+.install-steps li { padding-left: 4px; }
+.install-card .install-done { width: 100%; }
+@media (max-width: 720px) {
+  /* on phones the install button is icon-only to keep the header on one row */
+  .install-btn { width: 40px; padding: 0; justify-content: center; }
+  .install-btn span { display: none; }
+}
+@media (pointer: coarse) { .install-btn { height: 44px; } }
+@media (pointer: coarse) and (max-width: 720px) { .install-btn { width: 44px; } }
+@media (max-width: 400px) { .install-btn { width: 40px; height: 40px; } }
+@media (max-width: 440px) {
+  /* make room for the install button: the mark alone carries the brand */
+  .top:has(.install-btn:not([hidden])) .brand-word { display: none; }
+}

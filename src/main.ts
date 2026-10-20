@@ -21,6 +21,7 @@ import { BACKGROUNDS, applyAppearance } from "./ui/appearance";
 import { Arrows } from "./ui/arrows";
 import { logoSvg } from "./ui/logo";
 import { openAbout } from "./ui/about";
+import { setupInstall } from "./ui/install";
 import { PALETTES } from "./render/cubeView";
 
 const $ = <T extends HTMLElement = HTMLElement>(sel: string) => document.querySelector(sel) as T;
@@ -259,7 +260,7 @@ window.addEventListener("keydown", (e) => {
   const target = e.target as HTMLElement;
   if (target.closest("input, textarea, select, [contenteditable]")) return;
   if (e.key === "Escape") {
-    if (!$("#scan").hidden || !$("#about").hidden) return;
+    if (!$("#scan").hidden || !$("#about").hidden || !$("#install").hidden) return;
     if (!$("#panel").hidden) return closePanel();
     if (replay) return exitReplay();
     if (!$("#result").hidden) return closeResult();
@@ -271,7 +272,7 @@ window.addEventListener("keydown", (e) => {
     game.undo();
     return;
   }
-  if (!$("#panel").hidden || !$("#scan").hidden || !$("#about").hidden) return;
+  if (!$("#panel").hidden || !$("#scan").hidden || !$("#about").hidden || !$("#install").hidden) return;
   if (e.key === " ") {
     e.preventDefault();
     if (replay) return replay.playing ? replay.pause() : replay.play();
@@ -695,6 +696,15 @@ function startScan() {
   if (replay) exitReplay();
   game.reset();
   openScanner($("#scan"), { stage, game, toast, netSvg });
+}
+
+// ---- install as an app --------------------------------------------------------------
+{
+  const btn = $<HTMLButtonElement>("#install-btn");
+  btn.innerHTML = `${ICONS.install}<span>Install app</span>`;
+  btn.setAttribute("aria-label", "Install U.CUBE as an app");
+  setupInstall(btn, $("#install"), toast);
+  new MutationObserver(() => requestAnimationFrame(updateSafeArea)).observe(btn, { attributes: true, attributeFilter: ["hidden"] });
 }
 
 // ---- shared replay links ------------------------------------------------------------

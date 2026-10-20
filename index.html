@@ -20,6 +20,7 @@
         <button class="brand" id="brand" aria-label="About U.CUBE" aria-haspopup="dialog"></button>
         <nav class="levels" role="radiogroup" aria-label="Difficulty"></nav>
         <div class="top-actions">
+          <button class="install-btn" id="install-btn" hidden>Install app</button>
           <button class="icon-btn" data-action="scan" aria-label="Scan a real cube"></button>
           <button class="icon-btn" data-action="stats" aria-label="Statistics"></button>
           <button class="icon-btn" data-action="settings" aria-label="Settings"></button>
@@ -53,6 +54,7 @@
       <aside class="panel" id="panel" hidden role="dialog" aria-modal="true" aria-labelledby="panel-title"></aside>
       <section class="scan" id="scan" hidden role="dialog" aria-modal="true" aria-labelledby="scan-title"></section>
       <div class="about" id="about" hidden role="dialog" aria-modal="true" aria-labelledby="about-title"></div>
+      <div class="about" id="install" hidden role="dialog" aria-modal="true"></div>
       <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
     </div>
     <script type="module" src="/src/main.ts"></script>
